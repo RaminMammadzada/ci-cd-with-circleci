@@ -5,7 +5,10 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo "hello world" > ~/output.txt
+      - checkout
+      - run:
+          name: "Say Hello"
+          command: echo "hello Ramin" > ~/output.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -13,16 +16,21 @@ jobs:
 
   print_output_file:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/base:2021.11
     steps:
+      - checkout
+      - run:
+          name: "print output file"
+          command: |
+            cat ~/output.txt
       - attach_workspace:
           at: ~/
-      - run: cat ~/output.txt
 
 workflows:
-  my_workflow:
+  welcome:
     jobs:
       - save_hello_world_output
       - print_output_file:
           requires:
             - save_hello_world_output
+
