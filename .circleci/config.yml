@@ -10,7 +10,7 @@ jobs:
           name: "Say Hello"
           command: echo "hello Ramin" > output.txt
       - persist_to_workspace:
-          root: /
+          root: /tmp/try
           paths:
             - output.txt
 
@@ -22,9 +22,9 @@ jobs:
       - run:
           name: "print output file"
           command: |
-            cat /output.txt
+            cat /tmp/try/output.txt
       - attach_workspace:
-          at: /
+          at: /tmp/try
 
 workflows:
   welcome:
