@@ -1,40 +1,34 @@
 version: 2.1
 
 jobs:
-  print_hello:
+  save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
           name: "Say Hello"
-          command: "echo hello "
-  
-  print_world:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: "Say World"
-          command: "echo world"
+          command: echo "hello Ramin" >> output.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - output.txt
 
-  print_name:
+  print_output_file:
     docker:
       - image: cimg/base:2021.11
     steps:
       - checkout
       - run:
-          name: "echo an env var that is part of our project"
+          name: "print output file"
           command: |
-            echo $MY_NAME
+            cat ~/output.txt
+      - attach_workspace:
+          at: ~/
 
 workflows:
   welcome:
     jobs:
-      - print_hello
-      - print_world:
-          requires:
-            - print_hello
-      - print_name
+      - save_hello_world_output
+      - print_output_file
 
