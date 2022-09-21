@@ -19,6 +19,16 @@ jobs:
           name: "Say World"
           command: "echo world"
 
+  print_name:
+    docker:
+      - image: cimg/base:2021.11
+    steps:
+      - checkout
+      - run:
+          name: "echo an env var that is part of our project"
+          command: |
+            echo $MY_NAME
+
 workflows:
   welcome:
     jobs:
@@ -26,4 +36,5 @@ workflows:
       - print_world:
           requires:
             - print_hello
+      - print_name
 
